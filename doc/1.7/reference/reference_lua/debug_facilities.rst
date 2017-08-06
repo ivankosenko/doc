@@ -1,0 +1,180 @@
+.. _debug:
+
+-------------------------------------------------------------------------------
+                            Debug facilities
+-------------------------------------------------------------------------------
+
+.. module:: debug
+
+The ``debug`` library provides an interface for debugging Lua programs. All
+functions in this library reside in the ``debug`` table. Those functions that
+operate on a thread have an optional first parameter that specifies the thread
+to operate on. The default is always the current thread.
+
+.. IMPORTANT::
+
+    This library should be used only for debugging and profiling and not as a
+    regular programming tool, as the functions provided here can take too long
+    to run. Besides, several of these functions can compromise otherwise
+    secure code.
+
+The functions in ``debug`` are:
+
+.. _debug-debug:
+
+.. function:: debug()
+
+    Enters an interactive mode and runs each string that the user types in. The
+    user can, among other things, inspect global and local variables, change
+    their values and evaluate expressions.
+
+    Enter ``cont`` to exit this function, so that the caller can continue
+    its execution.
+
+    .. NOTE::
+
+        Commands for ``debug.debug()`` are not lexically nested within any
+        function and so have no direct access to local variables.
+
+.. _debug-getfenv:
+
+.. function:: getfenv(o)
+
+    :return: the environment of object ``o``
+
+.. _debug-gethook:
+
+.. function:: gethook([thread])
+
+    :return: the current hook settings of the ``thread`` as three values:
+
+      * the current hook function
+      * the current hook mask
+      * the current hook count as set by the ``debug.sethook()`` function)
+
+.. _debug-getinfo:
+
+.. function:: getinfo([thread,] function [, what])
+
+    :param function: ``function`` to get information on
+    :type function: function or int
+    :param str what: what information on a ``function`` to return
+
+    :return: a table with information about a function
+
+    You can pass in a ``function`` directly, or you can give a number that
+    specifies a function running at level ``function`` of the call stack of 
+    the given ``thread``: level 0 is the current function (``getinfo()`` itself),
+    level 1 is the function that called ``getinfo()``, and so on. If ``function`` 
+    is a number larger than the number of active functions, ``getinfo()`` returns 
+    ``nil``.
+
+    The default for ``what`` is to get all information available, except the table
+    of valid lines. If present, the option ``f`` adds a field named ``func`` with
+    the function itself. If present, the option ``L`` adds a field named
+    ``activelines`` with the table of valid lines.
+
+.. _debug-getlocal:
+
+.. function:: getlocal([thread,] level, local)
+
+    :return: the name and the value of the local variable with index ``local``
+             of the function at level ``level`` of the stack or ``nil`` if there
+             is no local variable with the given index
+
+    :raises error: if a ``level`` is out of range
+
+    .. HINT::
+
+        You can call ``debug.getinfo()`` to check whether the level is valid.
+
+.. _debug-getmetatable:
+
+.. function:: getmetatable(object)
+
+    :return: metatable of the given ``object`` or ``nil`` if it does not have
+             a metatable
+
+.. _debug-getregistry:
+
+.. function:: getregistry()
+
+    :return: the registry table
+
+.. _debug-getupvalue:
+
+.. function:: getupvalue(func, up)
+
+    :return: the name and the value of the upvalue with the index ``up`` of
+             the function ``func`` or ``nil`` if there is no upvalue with
+             the given index
+
+.. _debug-setfenv:
+
+.. function:: setfenv(object, table)
+
+    Sets the environment of the given ``object`` to the given ``table``.
+
+    :return: the ``object``
+
+.. _debug-sethook:
+
+.. function:: sethook([thread,] hook, mask [, count])
+
+    Sets the given function as a hook.  When called without arguments,
+    turns the hook off.
+
+    :param str mask: describes when the ``hook`` will be called; may have
+                     the following values:
+
+      * ``c`` - the ``hook`` is called every time Lua calls a function
+      * ``r`` - the ``hook`` is called every time Lua returns from a function
+      * ``l`` - the ``hook`` is called every time Lua enters a new line of code
+    
+    :param int count: describes when the ``hook`` will be called; when
+                      different from zero, the ``hook`` is called after
+                      every ``count`` instructions.
+
+.. _debug-setlocal:
+
+.. function:: setlocal([thread,] level, local, value)
+
+    Assigns the value ``value`` to the local variable with the index ``local``
+    of the function at level ``level`` of the stack.
+
+    :return: the name of the local variable or ``nil`` if there is no local
+             variable with the given index
+
+    :raises error: if a ``level`` is out of range
+
+    .. HINT::
+
+        You can call ``debug.getinfo()`` to check whether the level is valid.
+
+.. _debug-setmetatable:
+
+.. function:: setmetatable(object, table)
+
+    Sets the metatable for the given ``object`` to the given ``table``.
+
+.. _debug-setupvalue:
+
+.. function:: setupvalue(func, up, value)
+
+    Assigns the value ``value`` to the upvalue with the index ``up``
+    of the function ``func``.
+
+    :return: the name of the upvalue or ``nil`` if there is no
+             upvalue with the given index
+
+.. _debug-traceback:
+
+.. function:: traceback([thread,] [message [, level]])
+
+    :param str message: an optional message prepended to the traceback
+    :param int level: specifies at which level to start the traceback
+                      (default is 1)
+
+    :return: a string with a traceback of the call stack
+
+For more information, refer to the `Lua Reference Manual <https://www.lua.org/manual/5.1/manual.html#5.9>`_.
