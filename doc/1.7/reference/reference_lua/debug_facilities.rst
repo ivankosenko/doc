@@ -44,9 +44,12 @@ The functions in ``debug`` are:
 
 .. _debug-getfenv:
 
-.. function:: getfenv(o)
+.. function:: getfenv(object)
 
-    :return: the environment of object ``o``
+    :param object: object to get the environment of
+    :type object: table, userdata, thread or function
+
+    :return: the environment of the ``object``
 
 .. _debug-gethook:
 
@@ -62,11 +65,11 @@ The functions in ``debug`` are:
 
 .. function:: getinfo([thread,] function [, what])
 
-    :param function: ``function`` to get information on
-    :type function: function or int
-    :param str what: what information on the ``function`` to return
+    :param function: function to get information on
+    :type function: function or number
+    :param string what: what information on the ``function`` to return
 
-    :return: a table with information about the function
+    :return: a table with information about the ``function``
 
     You can pass in a ``function`` directly, or you can give a number that
     specifies a function running at level ``function`` of the call stack of
@@ -84,7 +87,10 @@ The functions in ``debug`` are:
 
 .. function:: getlocal([thread,] level, local)
 
-    :return: the name and the value of the local variable with index ``local``
+    :param number level: level of the stack
+    :param number local: index of the local variable
+
+    :return: the name and the value of the local variable with the index ``local``
              of the function at level ``level`` of the stack or ``nil`` if there
              is no local variable with the given index; raises an error if
              ``level`` is out of range
@@ -97,7 +103,10 @@ The functions in ``debug`` are:
 
 .. function:: getmetatable(object)
 
-    :return: metatable of the given ``object`` or ``nil`` if it does not have
+    :param object: object to get the metatable of
+    :type object: table, userdata, thread or function
+
+    :return: a metatable of the ``object`` or ``nil`` if it does not have
              a metatable
 
 .. _debug-getregistry:
@@ -110,6 +119,9 @@ The functions in ``debug`` are:
 
 .. function:: getupvalue(func, up)
 
+    :param function func: function to get the upvalue of
+    :param number up: index of the function upvalue
+
     :return: the name and the value of the upvalue with the index ``up`` of
              the function ``func`` or ``nil`` if there is no upvalue with
              the given index
@@ -118,7 +130,11 @@ The functions in ``debug`` are:
 
 .. function:: setfenv(object, table)
 
-    Sets the environment of the given ``object`` to the given ``table``.
+    Sets the environment of the ``object`` to the ``table``.
+
+    :param object: object to change the environment of
+    :type object: table, userdata, thread or function
+    :param table table: table to set the object environment to
 
     :return: the ``object``
 
@@ -129,14 +145,15 @@ The functions in ``debug`` are:
     Sets the given function as a hook.  When called without arguments,
     turns the hook off.
 
-    :param str mask: describes when the ``hook`` will be called;
+    :param function hook: function to set as a hook
+    :param string mask: describes when the ``hook`` will be called;
       may have the following values:
 
       * ``c`` - the ``hook`` is called every time Lua calls a function
       * ``r`` - the ``hook`` is called every time Lua returns from a function
       * ``l`` - the ``hook`` is called every time Lua enters a new line of code
 
-    :param int count: describes when the ``hook`` will be called; when
+    :param number count: describes when the ``hook`` will be called; when
                       different from zero, the ``hook`` is called after
                       every ``count`` instructions.
 
@@ -146,6 +163,11 @@ The functions in ``debug`` are:
 
     Assigns the value ``value`` to the local variable with the index ``local``
     of the function at level ``level`` of the stack.
+
+    :param number level: level of the stack
+    :param number local: index of the local variable
+    :param value: value to assign to the local variable
+    :type value: boolean, number, string or userdata
 
     :return: the name of the local variable or ``nil`` if there is no local
              variable with the given index; raises an error if ``level`` is
@@ -159,7 +181,11 @@ The functions in ``debug`` are:
 
 .. function:: setmetatable(object, table)
 
-    Sets the metatable for the given ``object`` to the given ``table``.
+    Sets the metatable of the ``object`` to the ``table``.
+
+    :param object: object to change the metatable of
+    :type object: table, userdata, thread or function
+    :param table table: table to set the object metatable to
 
 .. _debug-setupvalue:
 
@@ -168,15 +194,20 @@ The functions in ``debug`` are:
     Assigns the value ``value`` to the upvalue with the index ``up``
     of the function ``func``.
 
+    :param function func: function to set the upvalue of
+    :param number up: index of the function upvalue
+    :param value: value to assign to the function upvalue
+    :type value: boolean, number, string or userdata
+
     :return: the name of the upvalue or ``nil`` if there is no
              upvalue with the given index
 
 .. _debug-traceback:
 
-.. function:: traceback([thread,] message, level)
+.. function:: traceback([thread,] [message,] [level])
 
-    :param str message: a message prepended to the traceback; optional
-    :param int level: specifies at which level to start the traceback
-                      (default is 1); optional
+    :param string message: an optional message prepended to the traceback
+    :param number level: specifies at which level to start the traceback
+                         (default is 1)
 
     :return: a string with a traceback of the call stack
