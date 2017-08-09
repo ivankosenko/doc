@@ -6,7 +6,8 @@
 
 Tarantool users can benefit from built-in debug facilities that are part of:
 
-* Lua (`debug <https://www.lua.org/manual/5.1/manual.html#5.9>`_ library) and
+* Lua (`debug <https://www.lua.org/manual/5.1/manual.html#5.9>`_ library,
+  see details below) and
 * LuaJit (`debug.* <http://luajit.org/extensions.html>`_ functions).
 
 .. module:: debug
