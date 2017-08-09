@@ -4,6 +4,11 @@
                             Debug facilities
 -------------------------------------------------------------------------------
 
+Tarantool users can benefit from built-in debug facilities that are part of:
+
+* Lua (`debug <https://www.lua.org/manual/5.1/manual.html#5.9>`_ library) and
+* LuaJit (`debug.* <http://luajit.org/extensions.html>`_ functions).
+
 .. module:: debug
 
 The ``debug`` library provides an interface for debugging Lua programs. All
@@ -11,7 +16,7 @@ functions in this library reside in the ``debug`` table. Those functions that
 operate on a thread have an optional first parameter that specifies the thread
 to operate on. The default is always the current thread.
 
-.. IMPORTANT::
+.. NOTE::
 
     This library should be used only for debugging and profiling and not as a
     regular programming tool, as the functions provided here can take too long
@@ -50,7 +55,7 @@ The functions in ``debug`` are:
 
       * the current hook function
       * the current hook mask
-      * the current hook count as set by the ``debug.sethook()`` function)
+      * the current hook count as set by the ``debug.sethook()`` function
 
 .. _debug-getinfo:
 
@@ -58,15 +63,15 @@ The functions in ``debug`` are:
 
     :param function: ``function`` to get information on
     :type function: function or int
-    :param str what: what information on a ``function`` to return
+    :param str what: what information on the ``function`` to return
 
-    :return: a table with information about a function
+    :return: a table with information about the function
 
     You can pass in a ``function`` directly, or you can give a number that
-    specifies a function running at level ``function`` of the call stack of 
+    specifies a function running at level ``function`` of the call stack of
     the given ``thread``: level 0 is the current function (``getinfo()`` itself),
-    level 1 is the function that called ``getinfo()``, and so on. If ``function`` 
-    is a number larger than the number of active functions, ``getinfo()`` returns 
+    level 1 is the function that called ``getinfo()``, and so on. If ``function``
+    is a number larger than the number of active functions, ``getinfo()`` returns
     ``nil``.
 
     The default for ``what`` is to get all information available, except the table
@@ -80,11 +85,10 @@ The functions in ``debug`` are:
 
     :return: the name and the value of the local variable with index ``local``
              of the function at level ``level`` of the stack or ``nil`` if there
-             is no local variable with the given index
+             is no local variable with the given index; raises an error if
+             ``level`` is out of range
 
-    :raises error: if a ``level`` is out of range
-
-    .. HINT::
+    .. NOTE::
 
         You can call ``debug.getinfo()`` to check whether the level is valid.
 
@@ -124,13 +128,13 @@ The functions in ``debug`` are:
     Sets the given function as a hook.  When called without arguments,
     turns the hook off.
 
-    :param str mask: describes when the ``hook`` will be called; may have
-                     the following values:
+    :param str mask: describes when the ``hook`` will be called;
+      may have the following values:
 
       * ``c`` - the ``hook`` is called every time Lua calls a function
       * ``r`` - the ``hook`` is called every time Lua returns from a function
       * ``l`` - the ``hook`` is called every time Lua enters a new line of code
-    
+
     :param int count: describes when the ``hook`` will be called; when
                       different from zero, the ``hook`` is called after
                       every ``count`` instructions.
@@ -143,11 +147,10 @@ The functions in ``debug`` are:
     of the function at level ``level`` of the stack.
 
     :return: the name of the local variable or ``nil`` if there is no local
-             variable with the given index
+             variable with the given index; raises an error if ``level`` is
+             out of range
 
-    :raises error: if a ``level`` is out of range
-
-    .. HINT::
+    .. NOTE::
 
         You can call ``debug.getinfo()`` to check whether the level is valid.
 
@@ -169,12 +172,10 @@ The functions in ``debug`` are:
 
 .. _debug-traceback:
 
-.. function:: traceback([thread,] [message [, level]])
+.. function:: traceback([thread,] message [, level])
 
     :param str message: an optional message prepended to the traceback
     :param int level: specifies at which level to start the traceback
                       (default is 1)
 
     :return: a string with a traceback of the call stack
-
-For more information, refer to the `Lua Reference Manual <https://www.lua.org/manual/5.1/manual.html#5.9>`_.
