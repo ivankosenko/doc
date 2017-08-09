@@ -173,10 +173,10 @@ The functions in ``debug`` are:
 
 .. _debug-traceback:
 
-.. function:: traceback([thread,] message [, level])
+.. function:: traceback([thread,] message, level)
 
-    :param str message: an optional message prepended to the traceback
+    :param str message: a message prepended to the traceback; optional
     :param int level: specifies at which level to start the traceback
-                      (default is 1)
+                      (default is 1); optional
 
     :return: a string with a traceback of the call stack
