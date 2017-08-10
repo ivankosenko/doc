@@ -1,4 +1,4 @@
-.. _debug:
+.. _debug-module:
 
 -------------------------------------------------------------------------------
                             Debug facilities
@@ -204,7 +204,7 @@ The functions in ``debug`` are:
 
 .. _debug-traceback:
 
-.. function:: traceback([thread,] [message,] [level])
+.. function:: traceback([thread,] [message] [, level])
 
     :param string message: an optional message prepended to the traceback
     :param number level: specifies at which level to start the traceback
